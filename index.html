@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			.box1{
+				width: 100px;
+				height: 100px;
+				background-color: red;
+				position: absolute;
+				top: 40px;
+				left: 50px;
+			}
+			.box2{
+				width: 100px;
+				height: 100px;
+				background-color: blue;
+				position: absolute;
+				top: 40px;
+				left: 250px;
+			}
+		</style>
+	</head>
+	<body>
+			
+		<div class="box1"></div>
+		<div class="box2"></div>
+		
+	</body>
+</html>
+<script type="text/javascript">
+	// 获取两个盒子
+	var box1 = document.querySelector('.box1');
+	var box2 = document.querySelector('.box2');
+		console.log(box2)
+
+		var num= 0;
+	// 盒子2可以拖拽
+	box2.onmousedown = function(e){
+		var x= e.pageX - box2.offsetLeft;
+		var y= e.pageY - box2.offsetTop;
+		console.log(x,y);
+		window.onmousemove = function(e){
+			box2.style.left = e.pageX - x + 'px';
+			box2.style.top = e.pageY - y + 'px';
+			
+			// 当盒子拖拽的时候去判断是否碰上用if （调用下面的函数）
+			// 把函数调用当做条件  如果为真则 把盒子一的颜色变成黑色  否则 盒子一 还是红色
+			if(pz(box1,box2)){
+				box1.style.backgroundColor = 'black';
+				num++
+				console.log(num);
+			}else{
+				box1.style.backgroundColor = 'red';
+			}
+			
+		}
+		
+		box2.onmouseup = function(){
+			window.onmousemove = '';
+			}
+			
+		}
+		
+		
+	
+	
+	// 碰撞检测函数:(不会碰到的情况)
+	
+	function pz(box_1,box_2){
+		// 获取的是两个参数的上下左右的偏移量 参数是代表任意的盒子一,盒子二 这里是在封装碰撞检测这个功能函数 
+		// 实现任意两个盒子的检测   所以一定要写在pz函数里面  
+		
+		// 获取盒子一的上下左右的偏移量:
+		var l1 = box_1.offsetLeft;  //左偏移  盒子左岩距离文档左侧的距离
+		var r1 = box_1.offsetLeft + box_1.offsetWidth;  // 盒子右岩距离文档左侧的距离  右偏移 = 左偏移 + 盒子本身的宽度
+		var t1 = box_1.offsetTop; //上偏移  盒子上沿距离 文档顶部的距离
+		var b1 = box_1.offsetTop + box_1.offsetHeight;  // 盒子下沿距离文档顶部的距离  下偏移 = 上偏移 + 盒子本身的高度
+		
+		// 获取盒子二的上下左右的偏移量:（同上）
+		var l2 = box_2.offsetLeft;
+		var r2 = box_2.offsetLeft + box_2.offsetWidth;
+		var t2 = box_2.offsetTop;
+		var b2 = box_2.offsetTop + box_2.offsetHeight;
+			
+			// 以下的情况是肯定碰不上的情况:
+			// 就是当:
+			// 盒子二的右偏移小于盒子一的左偏移
+			
+			// 盒子二的下偏移小于盒子一的上偏移
+			
+			// 盒子二的上偏移大于盒子一的下偏移
+			
+			// 盒子二的左偏移大于盒子一的右偏移
+			
+			if(r2< l1 || l2 > r1 || b2 < t1 || t2 > b1){
+				return false;   // 这些情况下，两个盒子绝对碰不上 返回false
+			}else{
+				return true;     // 反之，其他情况都是能碰上的  返回true
+			}
+	}
+</script>
